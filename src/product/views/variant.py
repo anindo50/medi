@@ -1,3 +1,4 @@
+from django.shortcuts import render,redirect
 from django.views import generic
 from django.views.generic import ListView, CreateView, UpdateView
 
@@ -39,3 +40,13 @@ class VariantCreateView(BaseVariantView, CreateView):
 
 class VariantEditView(BaseVariantView, UpdateView):
     pk_url_kwarg = 'id'
+
+def create_variant(request):
+    if request.method == "POST":
+        form = VariantForm(request.POST)
+        if form.is_valid():
+            form.save()
+            redirect('list.product')
+    else:
+        form = VariantForm()
+    return render(request,'variant/create.html',{'form':form})
